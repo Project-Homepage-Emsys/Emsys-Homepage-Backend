@@ -1,6 +1,8 @@
 package com.emsys.emsyswebsitebackend.repository;
 
 import com.emsys.emsyswebsitebackend.domain.User;
+import com.emsys.emsyswebsitebackend.dto.UserDto;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -26,19 +28,25 @@ public class UserRepositoryTest {
     @Test
     public void createdUserTest() throws Exception {
         // Given
-        //유저 생성을 위한 요청 데이터
-        String requestBody = "{\"userId\": \"john123\", \"email\": \"john@example.com\", \"nickname\": \"John\"}";
+        // Create a UserDto object for creating a user
+        UserDto userDto = UserDto.of("john123", "pass123", "john@example.com", "John", false, "010-1234-5678", false, "johnGithub", "johnBaekjoon");
+
+        // Convert UserDto object to JSON format
+        ObjectMapper objectMapper = new ObjectMapper();
+        String userDtoJson = objectMapper.writeValueAsString(userDto);
 
         // When
-        //POST 요청으로 유저 생성
+        // Send a POST request to create a new user
         mockMvc.perform(MockMvcRequestBuilders.post("/users")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(requestBody))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(userDtoJson))
                 .andExpect(MockMvcResultMatchers.status().isCreated());
 
         // Then
-        //생성된 유저 조회
+        // Check the created user in the database
         User user = userRepository.findById("john123").orElse(null);
+
+        // Assert the user exists and its properties are correct
         assertNotNull(user);
         assertEquals("john@example.com", user.getEmail());
         assertEquals("John", user.getNickname());

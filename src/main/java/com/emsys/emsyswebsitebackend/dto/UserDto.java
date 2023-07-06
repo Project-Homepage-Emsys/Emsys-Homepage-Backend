@@ -54,13 +54,14 @@ public record UserDto(
         return User.of(
                 studentId,
                 password,
+                email,
                 nickname,
                 graduated,
                 contact,
-                email,
                 isExecutive,
                 githubId,
                 baekjoonId
         );
     }
+
 }
