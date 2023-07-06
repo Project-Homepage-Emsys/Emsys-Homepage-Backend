@@ -42,7 +42,7 @@ public class User extends AuditingFields {
     private String baekjoonId;
 
 
-    protected User() {
+    public User() {
     }
 
     // 모든 필드를 초기화하는 생성자
