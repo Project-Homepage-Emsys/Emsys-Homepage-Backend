@@ -9,21 +9,21 @@ import javax.persistence.*;
 @Getter
 @Setter
 @ToString
-@Table(
-        name = "article_comment",
-//        indexes = {
-//
-//        }
-        )
+//@Table(
+//        name = "article_comment",
+////        indexes = {
+////
+////        }
+//        )
 @Entity
 public class ArticleComment extends AuditingFields {
     @Id
     // @Column()
     private String commentId;      // PK // commentNo?
 
-    @
-    @JoinColumn(name="articleId")
-    private Article articleId;  // FK, reference to Article(articleId)
+//    @
+//    @JoinColumn(name="articleId")
+//    private Article articleId;  // FK, reference to Article(articleId)
 
     @ManyToOne
     @JoinColumn(name="studentId")
