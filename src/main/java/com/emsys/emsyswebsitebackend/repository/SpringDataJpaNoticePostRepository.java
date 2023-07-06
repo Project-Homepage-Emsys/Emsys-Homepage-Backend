@@ -6,8 +6,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
 public interface SpringDataJpaNoticePostRepository extends JpaRepository<NoticePost, Long>, NoticePostRepository {
-    @Override
-    Optional<NoticePost> findByUser_Id(Long userId);
+//    @Override
+//    Optional<NoticePost> findByUser_ㅛId(Long userId);
     @Override
     Optional<NoticePost> findByTitle(String title);
     @Override
