@@ -9,24 +9,18 @@ import javax.persistence.*;
 @Getter
 @Setter
 @ToString
-@Table(
-        name = "article_comment",
-//        indexes = {
-//
-//        }
-        )
+// @Table
 @Entity
-public class ArticleComment extends AuditingFields {
+public class NoticeComment extends AuditingFields {
     @Id
-    // @Column()
+    @Column()
     private String commentId;      // PK // commentNo?
 
-    @
-    @JoinColumn(name="articleId")
-    private Article articleId;  // FK, reference to Article(articleId)
+    @JoinColumn(name="noticeId")
+    private Long noticeId;  // FK, reference to Article(articleId)
 
     @ManyToOne
-    @JoinColumn(name="studentId")
+    @JoinColumn(name="writeUserId")
     private User user;          // FK, reference to User(studnetId)
 
     @Lob
