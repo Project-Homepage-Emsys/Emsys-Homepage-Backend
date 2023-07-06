@@ -1,42 +1,26 @@
-package com.emsys.emsyswebsitebackend.domain;
-import javax.persistence.*;
+package com.emsys.emsyswebsitebackend.dto;
 
-@Entity
-@Table(name = "NoticePost")
-public class NoticePost extends AuditingFields {
+import com.emsys.emsyswebsitebackend.domain.User;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id")
+public class NoticePostDTO {
+
     private Long id;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "userId")
     private User user;
-
-    @Column(name = "title")
     private String title;
-
-    @Column(name = "content")
     private String content;
-
-    @Column(name = "hits")
     private int hits;
-
-    @Column(name = "attachments", nullable = true)
     private String attachments;
-
-    @Column(name = "isImportant")
-    private boolean isImportant;
-
-    @Column(name = "category")
     private String category;
 
-    public NoticePost(User user, String title, String content, int hits, boolean isImportant, String category) {
+    public NoticePostDTO() {}
+
+    public NoticePostDTO(Long id, User user, String title, String content, int hits, String attachments, boolean isImportant, String category) {
+        this.id = id;
         this.user = user;
         this.title = title;
         this.content = content;
         this.hits = hits;
-        this.isImportant = isImportant;
+        this.attachments = attachments;
         this.category = category;
     }
 
@@ -86,14 +70,6 @@ public class NoticePost extends AuditingFields {
 
     public void setAttachments(String attachments) {
         this.attachments = attachments;
-    }
-
-    public boolean isImportant() {
-        return isImportant;
-    }
-
-    public void setImportant(boolean important) {
-        isImportant = important;
     }
 
     public String getCategory() {

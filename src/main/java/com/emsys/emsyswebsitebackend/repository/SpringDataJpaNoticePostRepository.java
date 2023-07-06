@@ -10,10 +10,8 @@ public interface SpringDataJpaNoticePostRepository extends JpaRepository<NoticeP
     Optional<NoticePost> findByUser_Id(Long userId);
     @Override
     Optional<NoticePost> findByTitle(String title);
-
     @Override
     Optional<NoticePost> findByIsImportant(boolean isImportant);
-
     @Override
     Optional<NoticePost> findByCategory(String category);
 }
