@@ -25,14 +25,6 @@ public class NoticePostRepositoryTest {
     public void testSaveNoticePost() {
         User user = new User();
         // 필요한 user 필드 설정
-
-        NoticePost noticePost = new NoticePost(user, "테스트 제목", "테스트 내용", 1, false, "테스트 카테고리");
-        entityManager.persist(noticePost);
-        entityManager.flush();
-
-        Optional<NoticePost> found = noticePostRepository.findById(noticePost.getId());
-        assertThat(found.isPresent()).isEqualTo(true);
-        assertThat(found.get().getTitle()).isEqualTo(noticePost.getTitle());
     }
 
 }

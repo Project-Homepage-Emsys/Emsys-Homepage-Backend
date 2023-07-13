@@ -31,13 +31,15 @@ public class NoticePost extends AuditingFields {
     @Column(name = "category")
     private String category;
 
-    public NoticePost(User user, String title, String content, int hits, boolean isImportant, String category) {
+    public NoticePost(User user, String title, String content, int hits, String attachments, boolean isImportant, String category) {
         this.user = user;
         this.title = title;
         this.content = content;
-        this.hits = hits;
         this.isImportant = isImportant;
         this.category = category;
+        this.attachments = attachments;
+        this.hits = hits;
+
     }
 
     public Long getId() {
@@ -103,4 +105,5 @@ public class NoticePost extends AuditingFields {
     public void setCategory(String category) {
         this.category = category;
     }
+
 }

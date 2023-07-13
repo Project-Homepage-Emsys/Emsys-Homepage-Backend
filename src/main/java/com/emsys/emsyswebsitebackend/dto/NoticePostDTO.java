@@ -1,5 +1,6 @@
 package com.emsys.emsyswebsitebackend.dto;
 
+import com.emsys.emsyswebsitebackend.domain.NoticePost;
 import com.emsys.emsyswebsitebackend.domain.User;
 
 public class NoticePostDTO {
@@ -10,9 +11,19 @@ public class NoticePostDTO {
     private String content;
     private int hits;
     private String attachments;
+    private boolean isImportant;
     private String category;
 
     public NoticePostDTO() {}
+
+    public NoticePostDTO(User user, String title, String content, int hits, String attachments, boolean isImportant, String category) {
+        this.user = user;
+        this.title = title;
+        this.content = content;
+        this.attachments = attachments;
+        this.isImportant = isImportant;
+        this.category = category;
+    }
 
     public NoticePostDTO(Long id, User user, String title, String content, int hits, String attachments, boolean isImportant, String category) {
         this.id = id;
@@ -21,7 +32,13 @@ public class NoticePostDTO {
         this.content = content;
         this.hits = hits;
         this.attachments = attachments;
+        this.isImportant = isImportant;
         this.category = category;
+    }
+
+    public NoticePost toEntity() {
+        NoticePost post = new NoticePost(this.user, this.title, this.content, this.hits, this.attachments, this.isImportant, this.category);
+        return post;
     }
 
     public Long getId() {
