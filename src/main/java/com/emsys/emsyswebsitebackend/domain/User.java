@@ -63,8 +63,8 @@ public class User extends AuditingFields {
 //    가능하도록 제한하기 위함이다
 
     // 팩토리 메서드
-    public static User of(String studentId, String password, String nickname, Boolean graduated, String contact,
-                          String email, Boolean isExecutive, String githubId, String baekjoonId) {
+    public static User of(String studentId, String password, String email,String nickname, Boolean graduated, String contact,
+                          Boolean isExecutive, String githubId, String baekjoonId) {
         return new User(studentId, password, nickname, graduated, contact, email, isExecutive,
                 githubId, baekjoonId);
     }

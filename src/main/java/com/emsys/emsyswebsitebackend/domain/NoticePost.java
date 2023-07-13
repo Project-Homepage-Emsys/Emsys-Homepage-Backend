@@ -3,7 +3,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "NoticePost")
-public class NoticePost extends AuditingFields {
+public class NoticePost {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

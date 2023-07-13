@@ -20,14 +20,14 @@ public record UserDto(
         String modifiedBy) {
 
     public static UserDto of(String studentId, String password, String email, String nickname, Boolean graduated,
-                                    String contact, Boolean isExecutive, String githubId, String baekjoonId) {
+                             String contact, Boolean isExecutive, String githubId, String baekjoonId) {
         return new UserDto(studentId, password, email, nickname, graduated, contact, isExecutive,
                 githubId, baekjoonId, null, null, null, null);
     }
 
     public static UserDto of(String studentId, String password, String email, String nickname, Boolean graduated,
-                                    String contact, Boolean isExecutive, String githubId, String baekjoonId,
-                                    LocalDateTime createdAt, String createdBy, LocalDateTime modifiedAt, String modifiedBy) {
+                             String contact, Boolean isExecutive, String githubId, String baekjoonId,
+                             LocalDateTime createdAt, String createdBy, LocalDateTime modifiedAt, String modifiedBy) {
         return new UserDto(studentId, password, email, nickname, graduated, contact, isExecutive,
                 githubId, baekjoonId, createdAt, createdBy, modifiedAt, modifiedBy);
     }
@@ -54,13 +54,14 @@ public record UserDto(
         return User.of(
                 studentId,
                 password,
+                email,
                 nickname,
                 graduated,
                 contact,
-                email,
                 isExecutive,
                 githubId,
                 baekjoonId
         );
     }
+
 }
