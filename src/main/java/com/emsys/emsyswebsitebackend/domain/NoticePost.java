@@ -31,6 +31,9 @@ public class NoticePost extends AuditingFields {
     @Column(name = "category")
     private String category;
 
+    public NoticePost() {
+    }
+
     public NoticePost(User user, String title, String content, int hits, String attachments, boolean isImportant, String category) {
         this.user = user;
         this.title = title;

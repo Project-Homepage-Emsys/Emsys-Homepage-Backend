@@ -1,5 +1,6 @@
 package com.emsys.emsyswebsitebackend.controller;
 
+import com.emsys.emsyswebsitebackend.domain.User;
 import com.emsys.emsyswebsitebackend.dto.UserDto;
 import com.emsys.emsyswebsitebackend.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -10,6 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -33,7 +35,7 @@ public class UserControllerTest {
     @Test
     public void getUserByUsername() throws Exception {
         UserDto user = UserDto.of("studentId", "password", "email", "nickname", true, "contact", false, "githubId", "baekjoonId", LocalDateTime.now(), "createdBy", LocalDateTime.now(), "modifiedBy");
-        when(userService.searchUser(any(String.class))).thenReturn(user);
+        when(userService.searchUser(any(String.class))).thenReturn(Optional.of(user));
 
         mockMvc.perform(get("/api/users/testuser"))
                 .andExpect(status().isOk());
@@ -41,20 +43,23 @@ public class UserControllerTest {
 
     @Test
     public void createUser() throws Exception {
-        UserDto user = UserDto.of("studentId", "password", "email", "nickname", true, "contact", false, "githubId", "baekjoonId", LocalDateTime.now(), "createdBy", LocalDateTime.now(), "modifiedBy");
-        when(userService.saveUser(any(String.class), any(String.class), any(String.class), any(String.class), any(Boolean.class), any(String.class), any(Boolean.class), any(String.class), any(String.class))).thenReturn(user);
+        // given
+        User user = User.of("studentId", "password", "email", "nickname", true, "contact", false, "githubId", "baekjoonId");
+        UserDto userDto = UserDto.from(user);
+        when(userService.saveUser(user)).thenReturn(userDto);
 
-        mockMvc.perform(post("/api/users")
-                        .param("studentId", "testId")
-                        .param("password", "testPassword")
-                        .param("email", "testEmail@test.com")
-                        .param("nickname", "testNickname")
-                        .param("graduated", "false")
-                        .param("contact", "testContact")
-                        .param("isExecutive", "false")
-                        .param("githubId", "testGithubId")
-                        .param("baekjoonId", "testBaekjoonId")
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk());
+        String requestBody = "{ \"studentId\": \"testId\", \"password\": \"testPassword\", \"email\": \"testEmail@test.com\", \"nickname\": \"testNickname\", \"graduated\": false, \"contact\": \"testContact\", \"isExecutive\": false, \"githubId\": \"testGithubId\", \"baekjoonId\": \"testBaekjoonId\" }";
+
+        // when
+        ResultActions result = mockMvc.perform(post("/api/users")
+                .content(requestBody)
+                .contentType(MediaType.APPLICATION_JSON));
+
+        // then
+        result.andExpect(status().isCreated());
+
     }
+
+
+
 }

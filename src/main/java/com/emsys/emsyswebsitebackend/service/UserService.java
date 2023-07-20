@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Objects;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Transactional
@@ -17,13 +17,13 @@ public class UserService {
     private final UserRepository userRepository;
 
     @Transactional(readOnly = true)
-    public UserDto searchUser(String username) {
-        return UserDto.from(Objects.requireNonNull(userRepository.findById((username)).orElse(null)));
+    public Optional<UserDto> searchUser(String username) {
+        return userRepository.findById(username)
+                .map(UserDto::from);
     }
 
-    public UserDto saveUser(String studentId, String password, String email, String nickname, Boolean graduated, String contact, Boolean isExecutive, String githubId, String baekjoonId) {
-        return UserDto.from(
-                userRepository.save(User.of(studentId, password, email, nickname, graduated, contact, isExecutive, githubId, baekjoonId)));
+    public UserDto saveUser(User user) {
+        return UserDto.from(userRepository.save(user));
     }
 
 }
