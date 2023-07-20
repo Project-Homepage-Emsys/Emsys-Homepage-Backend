@@ -18,8 +18,9 @@ public class NoticePostService {
         this.noticePostRepository = noticePostRepository;
     }
 
-    public NoticePost save(NoticePost post) {
-        return noticePostRepository.save(post);
+    public long upload(NoticePost post) {
+        noticePostRepository.save(post);
+        return post.getId();
     }
 
     public Optional<NoticePost> findById(Long id) {
@@ -34,15 +35,15 @@ public class NoticePostService {
         noticePostRepository.deleteById(id);
     }
 
-    public Optional<NoticePost> findByTitle(String title) {
+    public List<NoticePost> findByTitle(String title) {
         return noticePostRepository.findByTitle(title);
     }
 
-    public Optional<NoticePost> findByIsImportant(boolean isImportant) {
+    public List<NoticePost> findByIsImportant(boolean isImportant) {
         return noticePostRepository.findByIsImportant(isImportant);
     }
 
-    public Optional<NoticePost> findByCategory(String category) {
+    public List<NoticePost> findByCategory(String category) {
         return noticePostRepository.findByCategory(category);
     }
 }

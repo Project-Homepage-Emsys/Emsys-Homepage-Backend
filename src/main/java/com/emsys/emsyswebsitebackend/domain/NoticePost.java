@@ -3,10 +3,10 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "NoticePost")
-public class NoticePost extends AuditingFields {
+public class NoticePost {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
     @ManyToOne(fetch = FetchType.LAZY)
@@ -30,6 +30,9 @@ public class NoticePost extends AuditingFields {
 
     @Column(name = "category")
     private String category;
+
+    public NoticePost() {
+    }
 
     public NoticePost(User user, String title, String content, int hits, String attachments, boolean isImportant, String category) {
         this.user = user;

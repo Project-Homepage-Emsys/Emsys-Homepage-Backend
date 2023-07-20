@@ -21,6 +21,7 @@ public class NoticePostDTO {
         this.title = title;
         this.content = content;
         this.attachments = attachments;
+        this.hits = hits;
         this.isImportant = isImportant;
         this.category = category;
     }
