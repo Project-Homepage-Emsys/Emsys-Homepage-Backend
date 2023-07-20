@@ -23,9 +23,8 @@ public class NoticePostController {
 
     @PostMapping
     public ResponseEntity<Long> createPost(@RequestBody NoticePostDTO post) {
-        NoticePost noticePost = post.toEntity();
-        System.out.println(noticePost.getId());
-        return ResponseEntity.ok(noticePostService.upload(noticePost));
+        System.out.println(post.getId());
+        return ResponseEntity.ok(noticePostService.upload(post));
     }
 
     @GetMapping("post/{id}")
@@ -40,20 +39,14 @@ public class NoticePostController {
         if (!optional.isPresent()) {
             return ResponseEntity.notFound().build();
         }
+        else{
+            return ResponseEntity.ok(noticePostService.update(id, postDTO));
+        }
 
-        NoticePost existingPost = optional.get();
-        existingPost.setUser(postDTO.getUser());
-        existingPost.setTitle(postDTO.getTitle());
-        existingPost.setContent(postDTO.getContent());
-        existingPost.setHits(postDTO.getHits());
-        existingPost.setAttachments(postDTO.getAttachments());
-        existingPost.setCategory(postDTO.getCategory());
-
-        return ResponseEntity.ok(noticePostService.upload(existingPost));
     }
 
     @GetMapping
-    public ResponseEntity<List<NoticePost>> getAllPosts() {
+    public ResponseEntity<List<NoticePostDTO>> getAllPosts() {
         return ResponseEntity.ok(noticePostService.findAll());
     }
 
@@ -64,17 +57,17 @@ public class NoticePostController {
     }
 
     @GetMapping("title/{title}")
-    public ResponseEntity<List<NoticePost>> getPostByTitle(@PathVariable String title) {
+    public ResponseEntity<List<NoticePostDTO>> getPostByTitle(@PathVariable String title) {
         return ResponseEntity.ok(noticePostService.findByTitle(title));
     }
 
     @GetMapping("/important/{isImportant}")
-    public ResponseEntity<List<NoticePost>> getPostByImportance(@PathVariable boolean isImportant) {
+    public ResponseEntity<List<NoticePostDTO>> getPostByImportance(@PathVariable boolean isImportant) {
         return ResponseEntity.ok(noticePostService.findByIsImportant(isImportant));
     }
 
     @GetMapping("category/{category}")
-    public ResponseEntity<List<NoticePost>> getPostByCategory(@PathVariable String category) {
+    public ResponseEntity<List<NoticePostDTO>> getPostByCategory(@PathVariable String category) {
         return ResponseEntity.ok(noticePostService.findByCategory(category));
     }
 }
