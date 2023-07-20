@@ -1,4 +1,6 @@
 package com.emsys.emsyswebsitebackend.domain;
+import com.emsys.emsyswebsitebackend.dto.NoticePostDTO;
+
 import javax.persistence.*;
 
 @Entity
@@ -42,7 +44,10 @@ public class NoticePost {
         this.category = category;
         this.attachments = attachments;
         this.hits = hits;
+    }
 
+    public NoticePostDTO toDTO() {
+        return new NoticePostDTO(this.id, this.user, this.title, this.content, this.hits, this.attachments, this.isImportant, this.category);
     }
 
     public Long getId() {
