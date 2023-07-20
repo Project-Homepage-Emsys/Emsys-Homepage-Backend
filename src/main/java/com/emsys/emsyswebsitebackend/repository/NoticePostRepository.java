@@ -15,11 +15,11 @@ public interface NoticePostRepository {
 
     void deleteById(Long id);
 
-    Optional<NoticePost> findByTitle(String title);
+    List<NoticePost> findByTitle(String title);
 
-    Optional<NoticePost> findByIsImportant(boolean isImportant);
+    List<NoticePost> findByIsImportant(boolean isImportant);
 
-    Optional<NoticePost> findByCategory(String category);
+    List<NoticePost> findByCategory(String category);
 
 
 }

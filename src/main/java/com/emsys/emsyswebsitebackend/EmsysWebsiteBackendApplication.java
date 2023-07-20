@@ -1,5 +1,6 @@
 package com.emsys.emsyswebsitebackend;
 
+import com.emsys.emsyswebsitebackend.controller.NoticePostController;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
