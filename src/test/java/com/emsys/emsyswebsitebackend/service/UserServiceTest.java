@@ -65,7 +65,7 @@ public class UserServiceTest {
         given(userRepository.save(userAccount)).willReturn(savedUserAccount);
 
         // When
-        UserDto result = sut.saveUser(userAccount);
+        User result = sut.saveUser(userAccount.toDto()).toEntity();
 
         // Then
         assertThat(result)

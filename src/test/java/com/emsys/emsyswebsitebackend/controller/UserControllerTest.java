@@ -46,7 +46,7 @@ public class UserControllerTest {
         // given
         User user = User.of("studentId", "password", "email", "nickname", true, "contact", false, "githubId", "baekjoonId");
         UserDto userDto = UserDto.from(user);
-        when(userService.saveUser(user)).thenReturn(userDto);
+        when(userService.saveUser(userDto)).thenReturn(userDto);
 
         String requestBody = "{ \"studentId\": \"testId\", \"password\": \"testPassword\", \"email\": \"testEmail@test.com\", \"nickname\": \"testNickname\", \"graduated\": false, \"contact\": \"testContact\", \"isExecutive\": false, \"githubId\": \"testGithubId\", \"baekjoonId\": \"testBaekjoonId\" }";
 

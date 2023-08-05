@@ -7,7 +7,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Transactional
@@ -22,8 +24,24 @@ public class UserService {
                 .map(UserDto::from);
     }
 
-    public UserDto saveUser(User user) {
-        return UserDto.from(userRepository.save(user));
+    public UserDto saveUser(UserDto userDto) {
+        return UserDto.from(userRepository.save(userDto.toEntity()));
     }
 
+    public List<UserDto> findAllUsers() {
+        List<User> users = userRepository.findAll();
+        return users.stream()
+                .map(UserDto::from)
+                .collect(Collectors.toList());
+    }
+
+    public UserDto loginUser(UserDto userDto) {
+        Optional<User> user = userRepository.findById(userDto.toEntity().getStudentId());
+        if (user.isPresent()) {
+            if (user.get().getPassword().equals(userDto.toEntity().getPassword())) {
+                return UserDto.from(user.get());
+            }
+        }
+        return null;
+    }
 }
