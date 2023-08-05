@@ -40,16 +40,12 @@ public record NoticeCommentDto(
         );
     }
 
-//    public NoticeComment toEntity() {
-//        return NoticeComment.of(
-//                this.commentId,
-//                this.noticePost,
-//                this.user,
-//                this.content,
-//                this.createdAt,
-//                this.createdBy,
-//                this.modifiedAt,
-//                this.modifiedBy
-//        );
-//    }
+    public NoticeComment toEntity() {
+        return NoticeComment.of(
+                this.commentId,
+                this.noticePost,
+                this.user,
+                this.content
+        );
+    }
 }

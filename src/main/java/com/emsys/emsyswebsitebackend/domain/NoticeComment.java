@@ -1,9 +1,9 @@
 package com.emsys.emsyswebsitebackend.domain;
 
+import com.emsys.emsyswebsitebackend.dto.NoticeCommentDto;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 
@@ -31,7 +31,31 @@ public class NoticeComment extends AuditingFields {
 
     // createdAt, createdBy, modifiedAt, modifiedBy
 
-    protected NoticeComment() {}
+
+    public static NoticeComment of(String content) {
+        return new NoticeComment(content);
+    }
+
+    public static NoticeComment of(Long commentId, NoticePost noticePost, User user, String content) {
+        return new NoticeComment(commentId, noticePost, user, content);
+    }
+
+    public static NoticeCommentDto toDto(NoticeComment entity) {
+        return NoticeCommentDto.from(entity);
+    }
+
+    private NoticeComment(Long commentId, NoticePost noticePost, User user, String content) {
+        this.commentId = commentId;
+        this.noticePost = noticePost;
+        this.user = user;
+        this.content = content;
+    }
+
+    private NoticeComment(NoticePost noticePost, User user, String content) {
+        this.noticePost = noticePost;
+        this.user = user;
+        this.content = content;
+    }
 
     private NoticeComment(String content) {
         this.noticePost = null;
@@ -39,7 +63,15 @@ public class NoticeComment extends AuditingFields {
         this.content = content;
     }
 
-    public static NoticeComment of(String content) {
-        return new NoticeComment(content);
+    private NoticeComment(User user, String content) {
+        this.noticePost = null;
+        this.user = user;
+        this.content = content;
+    }
+
+    private NoticeComment(NoticePost noticePost, String content) {
+        this.noticePost = noticePost;
+        this.user = null;
+        this.content = content;
     }
 }

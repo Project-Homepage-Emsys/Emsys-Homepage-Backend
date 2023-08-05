@@ -9,13 +9,15 @@ import java.util.List;
 
 @Repository
 public interface NoticeCommentRepository extends JpaRepository<NoticeComment, Long> {
+
+    // 전체 댓글 리스트 조회
+    List<NoticeComment> findAll();
+
     // 해당 글 댓글 전체 조회
     List<NoticeComment> findAllByNoticePost_Id(Long noticePostId);
 
-    // 댓글 생성
-
-
+    // comment id 로 댓글 조회
 
     // 댓글 삭제
-    void deleteByCommentIdAndUser(Long commentId, User user);
+    void deleteByCommentId(Long commentId);
 }

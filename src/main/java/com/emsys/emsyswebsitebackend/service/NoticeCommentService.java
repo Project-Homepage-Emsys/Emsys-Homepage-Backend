@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -25,7 +26,7 @@ public class NoticeCommentService {
      * @return 해당 글 전체 댓글 리스트 반환
      */
     @Transactional(readOnly = true)
-    public List<NoticeCommentDto> NoticeCommentList(Long noticeId) {
+    public List<NoticeCommentDto> listNoticeComment(Long noticeId) {
         try {
             return noticeCommentRepository.findAllByNoticePost_Id(noticeId)
                     .stream()
@@ -45,8 +46,8 @@ public class NoticeCommentService {
     @Transactional
     public int writeNoticeComment(NoticeCommentDto newNoticeCommentDto) {
         try {
-            // NoticeComment newNoticeCommentEntity = newNoticeCommentDto.toEntity();
-            // noticeCommentRepository.save(newNoticeCommentEntity);
+             NoticeComment newNoticeCommentEntity = newNoticeCommentDto.toEntity();
+             noticeCommentRepository.save(newNoticeCommentEntity);
             return 0;
         } catch (Exception e) {
             log.error("에러: " + e.toString());
@@ -59,17 +60,24 @@ public class NoticeCommentService {
      * @param preNoticeCommentDto
      * @return 0 (성공), -1 (실패)
      */
-//    @Transactional
-//    public int updateNoticeComment(NoticeCommentDto updatedNoticeCommentDto) {
-//        try {
-//
-//
-//
-//        } catch (Exception e) {
-//            log.error("에러: " + e.toString());
-//            return -1;
-//        }
-//    }
+    @Transactional
+    public int updateNoticeComment(NoticeCommentDto updatedNoticeCommentDto) {
+        try {
+            Optional<NoticeComment> fetchExistComment =
+                    noticeCommentRepository.findById(updatedNoticeCommentDto.commentId());
+            NoticeComment existComment = fetchExistComment.orElse(null);
+            NoticeComment updatedComment = updatedNoticeCommentDto.toEntity();
+            if (existComment != null && existComment.getCommentId().equals(updatedComment.getCommentId())) {
+                noticeCommentRepository.save(updatedComment);
+                return 0;
+            } else {
+                throw new Exception();
+            }
+        } catch (Exception e) {
+            log.error("에러: " + e.toString());
+            return -1;
+        }
+    }
 
     /**
      * deleteNoticeComment(Long, User)
@@ -78,9 +86,9 @@ public class NoticeCommentService {
      * @return 0 (성공), -1 (실패)
      */
     @Transactional
-    public int deleteNoticeComment(Long commentId, User user) {
+    public int deleteNoticeComment(Long commentId) {
         try {
-            noticeCommentRepository.deleteByCommentIdAndUser(commentId, user);
+            noticeCommentRepository.deleteByCommentId(commentId);
             return 0;
         } catch (Exception e) {
             log.error("에러: " + e.toString());
