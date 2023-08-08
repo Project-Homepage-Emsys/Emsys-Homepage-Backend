@@ -17,6 +17,9 @@ public record NoticeCommentDto(
     LocalDateTime modifiedAt,
     String modifiedBy
 ) {
+    public static NoticeCommentDto of(NoticePost noticePost, User user, String content) {
+        return new NoticeCommentDto(null, noticePost, user, content, null, null, null, null);
+    }
 
     public static NoticeCommentDto of(Long commentId, NoticePost noticePost, User user, String content) {
         return new NoticeCommentDto(commentId, noticePost, user, content, null, null, null, null);

@@ -5,6 +5,8 @@ import com.emsys.emsyswebsitebackend.domain.User;
 import com.emsys.emsyswebsitebackend.domain.constant.Message;
 import com.emsys.emsyswebsitebackend.domain.constant.StatusEnum;
 import com.emsys.emsyswebsitebackend.dto.NoticeCommentDto;
+import com.emsys.emsyswebsitebackend.dto.UserDto;
+import com.emsys.emsyswebsitebackend.request.NoticeCommentRequest;
 import com.emsys.emsyswebsitebackend.service.NoticeCommentService;
 import com.emsys.emsyswebsitebackend.service.NoticePostService;
 import com.emsys.emsyswebsitebackend.service.UserService;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @RestController
@@ -28,12 +31,10 @@ public class NoticeCommentController {
     private final UserService userService;
 
     // 댓글 작성
-    @PostMapping("/{commentId}")
+    @PostMapping
     public ResponseEntity<Message> writeNoticeComment(
-            @PathVariable Long commentId,
             @PathVariable Long postId,
-            @RequestParam String userName,
-            @RequestParam String content
+            @RequestBody NoticeCommentRequest request
     ) {
 
         Message message = new Message();
@@ -43,18 +44,25 @@ public class NoticeCommentController {
 
         Optional<NoticePost> fetchNoticePost = noticePostService.findById(postId);
         NoticePost post = fetchNoticePost.orElse(null);
-        User user = userService.searchUser(userName).toEntity();
-        NoticeCommentDto noticeCommentDto = NoticeCommentDto.of(commentId, post, user, content);
+        Optional<UserDto> fetchUser = userService.searchUser(request.getUserName());
+        UserDto userDto = fetchUser.orElse(null);
 
-        int result = noticeCommentService.writeNoticeComment(noticeCommentDto);
-        if (result == 0) {
-            message.setStatus(StatusEnum.OK);
-            message.setMessage("댓글 작성 완료");
+        if (post == null || userDto == null) {
+            message.setStatus(StatusEnum.BAD_REQUEST);
+            message.setMessage("존재하지 않는 작성자 혹은 글에 대한 댓글 작성");
         } else {
-            message.setStatus(StatusEnum.NOT_FOUND);
-            message.setMessage("댓글 작성 실패");
-        }
+            User user = userDto.toEntity();
+            NoticeCommentDto noticeCommentDto = NoticeCommentDto.of(post, user, request.getContent());
 
+            int result = noticeCommentService.writeNoticeComment(noticeCommentDto);
+            if (result == 0) {
+                message.setStatus(StatusEnum.OK);
+                message.setMessage("댓글 작성 완료");
+            } else {
+                message.setStatus(StatusEnum.INTERNAL_SERVER_ERROR);
+                message.setMessage("댓글 작성 실패");
+            }
+        }
         return new ResponseEntity<>(message, headers, HttpStatus.OK);
     }
 
@@ -94,7 +102,7 @@ public class NoticeCommentController {
 
         Optional<NoticePost> fetchNoticePost = noticePostService.findById(postId);
         NoticePost post = fetchNoticePost.orElse(null);
-        User user = userService.searchUser(userName).toEntity();
+        User user = userService.searchUser(userName).orElse(null).toEntity();
         NoticeCommentDto noticeCommentDto = NoticeCommentDto.of(commentId, post, user, content);
 
         int result = noticeCommentService.updateNoticeComment(noticeCommentDto);

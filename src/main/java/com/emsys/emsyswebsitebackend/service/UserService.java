@@ -7,7 +7,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Objects;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Transactional
@@ -17,13 +19,29 @@ public class UserService {
     private final UserRepository userRepository;
 
     @Transactional(readOnly = true)
-    public UserDto searchUser(String username) {
-        return UserDto.from(Objects.requireNonNull(userRepository.findById((username)).orElse(null)));
+    public Optional<UserDto> searchUser(String username) {
+        return userRepository.findById(username)
+                .map(UserDto::from);
     }
 
-    public UserDto saveUser(String studentId, String password, String email, String nickname, Boolean graduated, String contact, Boolean isExecutive, String githubId, String baekjoonId) {
-        return UserDto.from(
-                userRepository.save(User.of(studentId, password, email, nickname, graduated, contact, isExecutive, githubId, baekjoonId)));
+    public UserDto saveUser(UserDto userDto) {
+        return UserDto.from(userRepository.save(userDto.toEntity()));
     }
 
+    public List<UserDto> findAllUsers() {
+        List<User> users = userRepository.findAll();
+        return users.stream()
+                .map(UserDto::from)
+                .collect(Collectors.toList());
+    }
+
+    public UserDto loginUser(UserDto userDto) {
+        Optional<User> user = userRepository.findById(userDto.toEntity().getStudentId());
+        if (user.isPresent()) {
+            if (user.get().getPassword().equals(userDto.toEntity().getPassword())) {
+                return UserDto.from(user.get());
+            }
+        }
+        return null;
+    }
 }

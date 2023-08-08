@@ -1,5 +1,6 @@
 package com.emsys.emsyswebsitebackend.domain;
 
+import com.emsys.emsyswebsitebackend.dto.UserDto;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -14,8 +15,8 @@ import java.util.Objects;
 @Getter
 @Setter
 @ToString
+@Table(name="USER_ACCOUNT")
 @Entity
-@Table(name = "user")
 public class User extends AuditingFields {
 
     @Id
@@ -64,7 +65,7 @@ public class User extends AuditingFields {
 
     // 팩토리 메서드
     public static User of(String studentId, String password, String email,String nickname, Boolean graduated, String contact,
-                           Boolean isExecutive, String githubId, String baekjoonId) {
+                          Boolean isExecutive, String githubId, String baekjoonId) {
         return new User(studentId, password, nickname, graduated, contact, email, isExecutive,
                 githubId, baekjoonId);
     }
@@ -84,6 +85,20 @@ public class User extends AuditingFields {
     @Override
     public final int hashCode() {
         return getClass().hashCode();
+    }
+
+    public UserDto toDto() {
+        return UserDto.of(
+                this.studentId,
+                this.password,
+                this.email,
+                this.nickname,
+                this.graduated,
+                this.contact,
+                this.isExecutive,
+                this.githubId,
+                this.baekjoonId
+        );
     }
     // 이 메서드는 객체의 해시 코드를 생성하기 위해 오버라이드 된 메서드입니다.
     // 'equals()' 메서드가 'true' 를 반환하는 두 객체는 같은 해시 코드를 반환해야 합니다. 따라서
