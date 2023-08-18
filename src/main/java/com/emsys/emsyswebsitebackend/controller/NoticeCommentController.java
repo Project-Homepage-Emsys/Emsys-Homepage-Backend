@@ -47,7 +47,8 @@ public class NoticeCommentController {
         Optional<UserDto> fetchUser = userService.searchUser(request.getUserName());
         UserDto userDto = fetchUser.orElse(null);
 
-        if (post == null || userDto == null) {
+        // if (post == null || userDto == null) {
+        if (userDto == null) {
             message.setStatus(StatusEnum.BAD_REQUEST);
             message.setMessage("존재하지 않는 작성자 혹은 글에 대한 댓글 작성");
         } else {
@@ -63,6 +64,25 @@ public class NoticeCommentController {
                 message.setMessage("댓글 작성 실패");
             }
         }
+        return new ResponseEntity<>(message, headers, HttpStatus.OK);
+    }
+
+    // 전체 댓글 조회
+    @GetMapping("/all")
+    public ResponseEntity<Message> listAllNoticeComment()
+    {
+
+        Message message = new Message();
+        HttpHeaders headers= new HttpHeaders();
+
+        headers.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));
+
+        List<NoticeCommentDto> noticeComments = noticeCommentService.listNoticeComment();
+
+        message.setStatus(StatusEnum.OK);
+        message.setMessage("댓글 조회 완료");
+        message.setData(noticeComments);
+
         return new ResponseEntity<>(message, headers, HttpStatus.OK);
     }
 

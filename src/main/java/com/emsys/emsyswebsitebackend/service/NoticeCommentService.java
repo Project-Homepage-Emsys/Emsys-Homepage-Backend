@@ -21,6 +21,24 @@ public class NoticeCommentService {
     private final NoticeCommentRepository noticeCommentRepository;
 
     /**
+     * NoticeCommentList()
+     * @param
+     * @return 전체 댓글 리스트 반환
+     */
+    @Transactional(readOnly = true)
+    public List<NoticeCommentDto> listNoticeComment() {
+        try {
+            return noticeCommentRepository.findAll()
+                    .stream()
+                    .map(NoticeCommentDto::from)
+                    .toList();
+        } catch (Exception e) {
+            log.error("에러: " + e.toString());
+            return null;
+        }
+    }
+
+    /**
      * NoticeCommentList(Long)
      * @param noticeId
      * @return 해당 글 전체 댓글 리스트 반환

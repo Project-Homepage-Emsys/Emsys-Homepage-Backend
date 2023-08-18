@@ -19,11 +19,11 @@ public class NoticeComment extends AuditingFields {
     @Column(name="commentId")
     private Long commentId;             // PK
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name="noticeId")
     private NoticePost noticePost;      // FK, reference to NoticePost(id)
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name="writeUserId")
     private User user;                  // FK, reference to User(studentId)
 
